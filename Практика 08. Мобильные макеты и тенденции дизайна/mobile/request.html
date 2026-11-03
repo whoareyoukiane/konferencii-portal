@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Новая заявка · Конференции.РФ</title>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+<div class="bar">
+    <a class="logo" href="index.html">Конференции<b>.РФ</b></a>
+    <button class="menu" type="button">Меню</button>
+</div>
+
+<div class="wrap">
+    <h1>Заявка на участие</h1>
+    <form onsubmit="return false">
+        <div class="field">
+            <label for="event">Мероприятие</label>
+            <select id="event" name="event">
+                <option>Данные и аналитика (20.11.2026)</option>
+                <option>День дизайна интерфейсов (04.12.2026)</option>
+                <option>DevOps Weekend (18.12.2026)</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="room">Помещение</label>
+            <select id="room" name="room">
+                <option>Большой зал</option>
+                <option>Зал «Север»</option>
+                <option>Переговорная 2</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="payment">Способ оплаты</label>
+            <select id="payment" name="payment">
+                <option>Банковская карта</option>
+                <option>Счёт для организации</option>
+                <option>Наличными на месте</option>
+            </select>
+        </div>
+        <button class="btn" type="submit">Отправить заявку</button>
+    </form>
+</div>
+
+<nav class="tabs">
+    <a href="index.html">Мероприятия</a>
+    <a class="on" href="requests.html">Заявки</a>
+    <a href="login.html">Вход</a>
+</nav>
+</body>
+</html>
