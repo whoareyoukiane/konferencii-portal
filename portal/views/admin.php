@@ -32,10 +32,12 @@
             <div class="row">
                 <?php if ($r['status'] !== 'завершено'): ?>
                     <form method="post" action="/admin/requests/<?= (int) $r['id'] ?>/status" class="inline">
+                        <?= csrf_field() ?>
                         <button class="btn small" type="submit"><?= $r['status'] === 'новая' ? 'Назначить' : 'Завершить' ?></button>
                     </form>
                 <?php endif; ?>
                 <form method="post" action="/admin/requests/<?= (int) $r['id'] ?>/delete" class="inline">
+                    <?= csrf_field() ?>
                     <button class="btn small danger" type="submit">Удалить</button>
                 </form>
             </div>

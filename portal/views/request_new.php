@@ -1,5 +1,6 @@
 <h1>Заявка на участие</h1>
-<form method="post" action="/requests" class="form" novalidate>
+<form method="post" action="/requests" class="form" data-validate="request" novalidate>
+    <?= csrf_field() ?>
     <div class="field<?= isset($errors['event_id']) ? ' bad' : '' ?>">
         <label for="event_id">Мероприятие</label>
         <select id="event_id" name="event_id">

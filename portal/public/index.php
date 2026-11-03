@@ -10,9 +10,21 @@ spl_autoload_register(function (string $class) {
 
 require __DIR__ . '/../src/helpers.php';
 
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: same-origin');
+header("Content-Security-Policy: default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; form-action 'self'");
+
 Auth::start();
 
 $method = $_SERVER['REQUEST_METHOD'];
+
+// любой post без верного токена отклоняем
+if ($method === 'POST' && !Csrf::valid()) {
+    http_response_code(403);
+    echo 'Форма устарела или отправлена с другого сайта. Вернитесь назад и повторите.';
+    exit;
+}
 $path = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') ?: '/';
 
 $routes = [

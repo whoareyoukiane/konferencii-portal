@@ -1,5 +1,6 @@
 <h1>Вход</h1>
-<form method="post" action="/login" class="form" novalidate>
+<form method="post" action="/login" class="form" data-validate="login" novalidate>
+    <?= csrf_field() ?>
     <?php if ($error): ?>
         <p class="note-error"><?= e($error) ?></p>
     <?php endif; ?>

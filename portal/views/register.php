@@ -1,5 +1,6 @@
 <h1>Регистрация</h1>
-<form method="post" action="/register" class="form" novalidate>
+<form method="post" action="/register" class="form" data-validate="register" novalidate>
+    <?= csrf_field() ?>
     <div class="field<?= isset($errors['login']) ? ' bad' : '' ?>">
         <label for="login">Логин</label>
         <input id="login" name="login" value="<?= e($old['login'] ?? '') ?>" autocomplete="username">

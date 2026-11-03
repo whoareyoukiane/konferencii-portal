@@ -21,7 +21,7 @@
                 <a href="/requests">Мои заявки</a>
             <?php endif; ?>
             <span class="who"><?= e($user['login']) ?></span>
-            <form method="post" action="/logout" class="inline"><button type="submit">Выйти</button></form>
+            <form method="post" action="/logout" class="inline"><?= csrf_field() ?><button type="submit">Выйти</button></form>
         <?php endif; ?>
     </nav>
 </header>
@@ -32,5 +32,6 @@
     <?= $content ?>
 </main>
 <footer>Конференции.РФ, учебный проект, 2026</footer>
+<script src="/js/validate.js"></script>
 </body>
 </html>
