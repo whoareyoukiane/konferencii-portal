@@ -45,10 +45,4 @@ class Auth
         }
         return (new UserRepository())->findById((int) $_SESSION['user_id']);
     }
-
-    public static function isAdmin(): bool
-    {
-        $user = self::user();
-        return $user !== null && $user['role'] === 'admin';
-    }
 }
