@@ -1,0 +1,16 @@
+/* первая версия стилей, оформление будет в практике 10 */
+body { font-family: Arial, sans-serif; margin: 0; color: #222; }
+.top { background: #333; color: #fff; padding: 10px 20px; display: flex; gap: 20px; align-items: center; }
+.top a { color: #fff; margin-right: 12px; }
+main { padding: 20px; max-width: 1000px; margin: 0 auto; }
+footer { padding: 20px; color: #777; }
+.cards { display: flex; flex-wrap: wrap; gap: 16px; }
+.card { border: 1px solid #ccc; padding: 12px; width: 300px; }
+.card img { width: 100%; height: auto; }
+.btn { background: #0a7; color: #fff; border: 0; padding: 8px 14px; text-decoration: none; cursor: pointer; }
+.field { margin-bottom: 12px; }
+.field input, .field select { display: block; width: 280px; padding: 6px; }
+.err, .note-error { color: red; }
+.flash { background: #dfd; padding: 8px; }
+.inline { display: inline; }
+.meta { color: #666; }
