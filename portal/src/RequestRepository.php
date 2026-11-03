@@ -6,13 +6,18 @@ class RequestRepository
     public const ROOMS = ['Большой зал', 'Зал «Север»', 'Переговорная 2'];
     public const PAYMENTS = ['Банковская карта', 'Счёт для организации', 'Наличными на месте'];
 
-    private const SELECT = 'SELECT r.*, e.title AS event_title, e.date AS event_date, u.login, u.email, u.phone
+    private const SELECT = 'SELECT r.*, s.name AS status, e.title AS event_title, e.date AS event_date,
+                                   u.login, u.email, u.phone,
+                                   rv.id AS review_id, rv.rating, rv.text AS review_text
                               FROM requests r
+                              JOIN statuses s ON s.id = r.status_id
                               JOIN events e ON e.id = r.event_id
-                              JOIN users u ON u.id = r.user_id';
+                              JOIN users u ON u.id = r.user_id
+                              LEFT JOIN reviews rv ON rv.request_id = r.id';
 
     public function create(int $userId, int $eventId, string $room, string $payment): int
     {
+        // статус по умолчанию 1, то есть «новая»
         $st = Database::get()->prepare('INSERT INTO requests (user_id, event_id, room, payment) VALUES (?, ?, ?, ?)');
         $st->execute([$userId, $eventId, $room, $payment]);
         return (int) Database::get()->lastInsertId();
@@ -46,7 +51,7 @@ class RequestRepository
         $where = [];
         $args = [];
         if ($status) {
-            $where[] = 'r.status = ?';
+            $where[] = 's.name = ?';
             $args[] = $status;
         }
         if ($eventId) {
@@ -63,7 +68,7 @@ class RequestRepository
 
     public function setStatus(int $id, string $status): void
     {
-        $st = Database::get()->prepare('UPDATE requests SET status = ? WHERE id = ?');
+        $st = Database::get()->prepare('UPDATE requests SET status_id = (SELECT id FROM statuses WHERE name = ?) WHERE id = ?');
         $st->execute([$status, $id]);
     }
 
