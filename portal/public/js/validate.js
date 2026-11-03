@@ -10,11 +10,20 @@ var rules = {
     },
     phone: function (v) {
         var digits = v.replace(/\D/g, '');
-        var ok = digits.length === 11 && (digits[0] === '7' || digits[0] === '8');
+        var ok = /^[\d\s+()\-]+$/.test(v) && digits.length === 11 && (digits[0] === '7' || digits[0] === '8');
         return ok ? '' : 'Телефон в формате +7 900 123-45-67';
     },
     password: function (v) {
-        return v.length >= 8 ? '' : 'Пароль не короче 8 символов';
+        if (v.length < 8) {
+            return 'Пароль не короче 8 символов';
+        }
+        if (v.trim() === '') {
+            return 'Пароль не может состоять из одних пробелов';
+        }
+        if (new TextEncoder().encode(v).length > 72) {
+            return 'Пароль не длиннее 72 байт (кириллическая буква занимает 2 байта)';
+        }
+        return '';
     },
     event_id: function (v) {
         return v ? '' : 'Выберите мероприятие';
@@ -45,7 +54,9 @@ function showError(input, text) {
 
 function checkField(form, name) {
     var input = form.elements[name];
-    var text = rules[name](input.value.trim());
+    // пароль не обрезаем: пробелы в нём считаются, как на сервере
+    var value = name === 'password' ? input.value : input.value.trim();
+    var text = rules[name](value);
     showError(input, text);
     return text === '';
 }
