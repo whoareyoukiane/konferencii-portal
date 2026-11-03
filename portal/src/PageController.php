@@ -13,6 +13,13 @@ class PageController extends Controller
         $this->render('events', ['events' => (new EventRepository())->all()]);
     }
 
+    public function profile(): void
+    {
+        $user = $this->requireLogin();
+        $count = count((new RequestRepository())->byUser($user['id']));
+        $this->render('profile', ['requestCount' => $count]);
+    }
+
     public function notFound(): void
     {
         $this->render('404', [], 404);

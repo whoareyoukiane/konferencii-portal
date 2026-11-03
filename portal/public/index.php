@@ -30,6 +30,7 @@ $path = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') ?: '/';
 $routes = [
     'GET /' => ['PageController', 'home'],
     'GET /events' => ['PageController', 'events'],
+    'GET /profile' => ['PageController', 'profile'],
     'GET /register' => ['AuthController', 'registerForm'],
     'POST /register' => ['AuthController', 'register'],
     'GET /login' => ['AuthController', 'loginForm'],

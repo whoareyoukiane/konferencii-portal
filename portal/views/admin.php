@@ -18,13 +18,13 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <button class="btn" type="submit">Показать</button>
+    <button class="btn small" type="submit">Показать</button>
 </form>
 <p class="meta">Найдено заявок: <?= count($requests) ?></p>
 <div class="cards">
     <?php foreach ($requests as $r): ?>
         <article class="card">
-            <span class="badge"><?= e($r['status']) ?></span>
+            <span class="badge <?= status_class($r['status']) ?>"><?= e($r['status']) ?></span>
             <h3><?= e($r['event_title']) ?></h3>
             <p class="meta"><?= date_ru($r['event_date']) ?>, <?= e($r['room']) ?>, <?= e($r['payment']) ?></p>
             <p class="meta"><?= e($r['login']) ?>, <?= e($r['email']) ?>, <?= e($r['phone']) ?></p>
