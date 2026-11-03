@@ -28,6 +28,9 @@ class AdminController extends Controller
         if ($next === null) {
             $this->redirect('/admin', 'Заявка уже завершена');
         }
+        if ($next === 'завершено' && $request['event_date'] >= date('Y-m-d')) {
+            $this->redirect('/admin', 'Заявку можно завершить только после даты мероприятия (' . date_ru($request['event_date']) . ')');
+        }
         $requests->setStatus($id, $next);
         $this->redirect('/admin', 'Статус заявки № ' . $id . ': ' . $next);
     }
