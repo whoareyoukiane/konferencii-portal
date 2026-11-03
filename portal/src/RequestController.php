@@ -47,6 +47,32 @@ class RequestController extends Controller
         $this->render('my_requests', ['requests' => (new RequestRepository())->byUser($user['id'])]);
     }
 
+    // отзыв можно оставить, когда заявка завершена, мероприятие прошло и отзыва ещё нет
+    public function review(int $id): void
+    {
+        $user = $this->requireLogin();
+        $requests = new RequestRepository();
+        $request = $requests->find($id);
+        if ($request === null || (int) $request['user_id'] !== (int) $user['id']) {
+            $this->render('404', [], 404);
+            return;
+        }
+        if ($request['status'] !== 'завершено' || $request['event_date'] >= date('Y-m-d')) {
+            $this->redirect('/requests', 'Отзыв можно оставить только после завершения мероприятия');
+        }
+        if ($request['review_id']) {
+            $this->redirect('/requests', 'Отзыв уже оставлен');
+        }
+
+        $text = trim($_POST['text'] ?? '');
+        $rating = (int) ($_POST['rating'] ?? 0);
+        if (mb_strlen($text) < 10 || mb_strlen($text) > 500 || $rating < 1 || $rating > 5) {
+            $this->redirect('/requests', 'Отзыв: оценка от 1 до 5 и текст от 10 до 500 символов');
+        }
+        (new ReviewRepository())->create($id, $text, $rating);
+        $this->redirect('/requests', 'Спасибо за отзыв');
+    }
+
     private function formData(array $errors, array $old): array
     {
         $events = array_filter((new EventRepository())->all(), fn($e) => $e['date'] >= date('Y-m-d'));

@@ -47,6 +47,8 @@ if (isset($routes["$method $path"])) {
     [$class, $action] = $routes["$method $path"];
 } elseif ($method === 'POST' && preg_match('#^/admin/requests/(\d+)/status$#', $path, $m)) {
     [$class, $action, $args] = ['AdminController', 'setStatus', [(int) $m[1]]];
+} elseif ($method === 'POST' && preg_match('#^/requests/(\d+)/review$#', $path, $m)) {
+    [$class, $action, $args] = ['RequestController', 'review', [(int) $m[1]]];
 } elseif ($method === 'POST' && preg_match('#^/admin/requests/(\d+)/delete$#', $path, $m)) {
     [$class, $action, $args] = ['AdminController', 'delete', [(int) $m[1]]];
 } else {
