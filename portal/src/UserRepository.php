@@ -4,7 +4,8 @@ class UserRepository
 {
     public function findByLogin(string $login): ?array
     {
-        $st = Database::get()->prepare('SELECT * FROM users WHERE login = ?');
+        // логины не различаются по регистру: Admin и admin один и тот же логин
+        $st = Database::get()->prepare('SELECT * FROM users WHERE login = ? COLLATE NOCASE');
         $st->execute([$login]);
         return $st->fetch() ?: null;
     }
