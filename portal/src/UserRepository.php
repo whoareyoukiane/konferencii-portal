@@ -16,10 +16,11 @@ class UserRepository
         return $st->fetch() ?: null;
     }
 
+    // пароль приходит обычным текстом, в базу уходит только хеш
     public function create(string $login, string $password, string $email, string $phone, string $role = 'participant'): int
     {
-        $st = Database::get()->prepare('INSERT INTO users (login, password, email, phone, role) VALUES (?, ?, ?, ?, ?)');
-        $st->execute([$login, $password, $email, $phone, $role]);
+        $st = Database::get()->prepare('INSERT INTO users (login, password_hash, email, phone, role) VALUES (?, ?, ?, ?, ?)');
+        $st->execute([$login, password_hash($password, PASSWORD_DEFAULT), $email, $phone, $role]);
         return (int) Database::get()->lastInsertId();
     }
 }

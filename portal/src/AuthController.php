@@ -45,11 +45,19 @@ class AuthController extends Controller
     public function login(): void
     {
         $login = trim($_POST['login'] ?? '');
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        if (LoginThrottle::blocked($ip, $login)) {
+            $this->render('login', ['error' => 'Слишком много неудачных попыток. Попробуйте через 10 минут', 'old' => ['login' => $login]], 429);
+            return;
+        }
+
         $user = (new UserRepository())->findByLogin($login);
-        if ($user === null || $user['password'] !== ($_POST['password'] ?? '')) {
+        if ($user === null || !password_verify($_POST['password'] ?? '', $user['password_hash'])) {
+            LoginThrottle::fail($ip, $login);
             $this->render('login', ['error' => 'Неверный логин или пароль', 'old' => ['login' => $login]], 401);
             return;
         }
+        LoginThrottle::clear($ip, $login);
         Auth::login($user);
         $this->redirect($user['role'] === 'admin' ? '/admin' : '/requests');
     }
@@ -57,7 +65,7 @@ class AuthController extends Controller
     public function logout(): void
     {
         Auth::logout();
-        session_start();
+        Auth::start();
         $this->redirect('/', 'Вы вышли из аккаунта');
     }
 }
